@@ -7,16 +7,18 @@
 <style>
 body {
   font-family: Arial;
-  background:#0f0f0f;
+  background:#0f172a;
   color:white;
   padding:20px;
 }
 
+/* HEADER */
 h1 {
   color:#22c55e;
   text-align:center;
 }
 
+/* GRID */
 .grid {
   display:grid;
   grid-template-columns:1fr;
@@ -24,23 +26,65 @@ h1 {
   margin-top:20px;
 }
 
+/* CARDS */
 .card {
-  background:#1c1c1c;
+  background:#1e293b;
   padding:20px;
   border-radius:12px;
+  box-shadow:0 0 10px rgba(0,0,0,0.4);
 }
 
+/* BUTTON SYSTEM */
 a {
   display:block;
   margin:10px 0;
-  color:#22c55e;
   text-decoration:none;
-  font-weight:bold;
 }
 
+.btn {
+  background:#1e293b;
+  padding:14px;
+  border-radius:10px;
+  color:#22c55e;
+  font-weight:bold;
+  text-align:center;
+  transition:0.2s;
+  border:1px solid #334155;
+}
+
+.btn:hover {
+  background:#22c55e;
+  color:#0f172a;
+}
+
+/* TAG */
 .tag {
   font-size:12px;
   opacity:0.7;
+}
+
+/* DEAL COLORS */
+.hot {
+  border-left:5px solid #22c55e;
+}
+
+.mid {
+  border-left:5px solid #eab308;
+}
+
+.low {
+  border-left:5px solid #ef4444;
+}
+
+/* FILTER */
+select {
+  width:100%;
+  padding:10px;
+  border-radius:8px;
+  margin-top:10px;
+  background:#1e293b;
+  color:white;
+  border:none;
 }
 </style>
 </head>
@@ -59,39 +103,46 @@ Deal Engine • Funding • Tools • Investor System
   <!-- DEAL SYSTEM -->
   <div class="card">
     <span class="tag">DEAL SYSTEM</span>
-    <a href="deal_terminal.html">⚙️ Deal Terminal</a>
-    <a href="deal_generator.html">🧠 Deal Generator</a>
-    <a href="deal_to_pdf.html">🧾 Export Deal PDF</a>
+    <a href="deal_terminal.html" class="btn">⚙️ Deal Terminal</a>
+    <a href="deal_generator.html" class="btn">🧠 Deal Generator</a>
+    <a href="deal_to_pdf.html" class="btn">🧾 Export Deal PDF</a>
   </div>
 
-  <!-- INVESTOR / FUNDING -->
+  <!-- FUNDING -->
   <div class="card">
     <span class="tag">FUNDING + INVESTORS</span>
-    <a href="invest.html">💰 Invest With Us</a>
-    <a href="funding.html">🏦 Funding Hub</a>
+    <a href="invest.html" class="btn">💰 Invest With Us</a>
+    <a href="funding.html" class="btn">🏦 Funding Hub</a>
   </div>
 
   <!-- MEDIA -->
   <div class="card">
     <span class="tag">MEDIA</span>
-    <a href="media.html">🎥 Watch + Learn</a>
+    <a href="media.html" class="btn">🎥 Watch + Learn</a>
   </div>
 
-  <!-- LIVE DEAL BOARD (OPTIONAL NEXT STEP) -->
+  <!-- ACTION -->
+  <div class="card">
+    <span class="tag">ACTION</span>
+    <a href="deal_generator.html" class="btn">➕ Submit New Deal</a>
+  </div>
+
+  <!-- LIVE DEAL BOARD -->
   <div class="card">
     <span class="tag">LIVE DEAL BOARD</span>
-    <a href="deals.json">📊 View Raw Deal Data</a>
+
+    <h2>🔥 Deals</h2>
+
+    <select id="filter" onchange="filterDeals()">
+      <option value="all">All Deals</option>
+      <option value="80">🔥 Hot Deals (80+)</option>
+      <option value="50">👀 Mid Deals (50–79)</option>
+    </select>
+
+    <div id="deals"></div>
   </div>
 
-<h2 style="margin-top:40px;">🔥 Live Deal Board</h2>
-
-<select id="filter" onchange="filterDeals()">
-  <option value="all">All Deals</option>
-  <option value="80">🔥 Hot Deals (80+)</option>
-  <option value="50">👀 Mid Deals (50–79)</option>
-</select>
-
-<div id="deals"></div>
+</div>
 
 <script>
 let allDeals = [];
@@ -109,16 +160,23 @@ function displayDeals(deals) {
 
   deals.forEach(d => {
     let div = document.createElement('div');
-    div.className = "card";
-    div.innerHTML = `
-  <h3>${d.address}</h3>
-  <p>ARV: $${d.arv}</p>
-  <p>Profit: $${d.profit}</p>
-  <p>Status: ${d.status}</p>
-  <p>Score: ${d.score}</p>
 
-  <a href="invest.html">💰 Fund This Deal</a>
-`;
+    let level = "low";
+    if (d.score >= 80) level = "hot";
+    else if (d.score >= 50) level = "mid";
+
+    div.className = "card " + level;
+
+    div.innerHTML = `
+      <h3>${d.address}</h3>
+      <p>ARV: $${d.arv}</p>
+      <p>Profit: $${d.profit}</p>
+      <p>Status: ${d.status}</p>
+      <p>Score: ${d.score}</p>
+
+      <a href="invest.html" class="btn">💰 Fund This Deal</a>
+    `;
+
     container.appendChild(div);
   });
 }
@@ -135,11 +193,7 @@ function filterDeals() {
 
   displayDeals(filtered);
 }
-      </script>
-
-  <a href="deal_generator.html">➕ Submit New Deal</a>
-  
-</div>
+</script>
 
 </body>
-</html>
+  </html>
