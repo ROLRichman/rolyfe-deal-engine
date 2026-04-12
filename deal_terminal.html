@@ -1,73 +1,140 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>RO’Lyfe Deal Engine</title>
-  <style>
-    body { font-family: Arial; background:#111; color:white; padding:20px;}
-    .card { background:#1e1e1e; margin:10px; padding:15px; border-radius:10px;}
-    .hot { border-left:5px solid lime;}
-    a { color:#00ff88; text-decoration:none; margin-right:10px; }
-  </style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RO’Lyfe Deal Terminal</title>
+
+<style>
+body {
+  font-family: Arial;
+  background:#0f172a;
+  color:white;
+  margin:0;
+  padding:15px;
+}
+
+h1 {
+  text-align:center;
+  color:#22c55e;
+}
+
+.section {
+  background:#1e293b;
+  padding:15px;
+  border-radius:12px;
+  margin-top:15px;
+}
+
+input, button {
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border-radius:8px;
+  border:none;
+  font-size:16px;
+}
+
+button {
+  background:#22c55e;
+  color:black;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.flex {
+  display:flex;
+  gap:10px;
+}
+
+.flex input {
+  flex:1;
+}
+
+.result {
+  margin-top:10px;
+  font-size:18px;
+}
+
+.highlight {
+  color:#22c55e;
+  font-weight:bold;
+}
+</style>
 </head>
 
 <body>
 
-<h1>🔥 RO’Lyfe Live Deal Board</h1>
+<h1>🔥 RO’Lyfe Deal Terminal</h1>
 
-<!-- NAVIGATION -->
-<p>
-  <a href="deal_generator.html">⚙️ Generate Deal Pack</a>
-  <a href="invest.html">💰 Invest With Us</a>
-  <a href="deal_to_pdf.html">🧾 Generate Report</a>
-</p>
+<!-- PROPERTY -->
+<div class="section">
+<h2>Property Analyzer</h2>
 
-<select id="filter" onchange="filterDeals()">
-  <option value="all">All Deals</option>
-  <option value="80">🔥 Hot Deals (80+)</option>
-  <option value="50">👀 Mid Deals (50–79)</option>
-</select>
+<input id="address" placeholder="Property Address">
+<input id="arv" placeholder="ARV (After Repair Value)">
+<input id="purchase" placeholder="Purchase Price">
+<input id="repairs" placeholder="Estimated Repairs">
 
-<div id="deals"></div>
+<button onclick="analyzeDeal()">Analyze Deal</button>
+
+<div id="results" class="result"></div>
+</div>
+
+<!-- OFFER STRUCTURE -->
+<div class="section">
+<h2>Three-Tier Offer Builder</h2>
+
+<input id="cashOffer" placeholder="All Cash Offer">
+<input id="sellerCarry" placeholder="Seller Carry Price">
+<input id="sellerFinance" placeholder="Seller Finance Price">
+
+<button onclick="buildOffers()">Generate Offer Summary</button>
+
+<div id="offerResults" class="result"></div>
+</div>
+
+<!-- SAVE DEAL -->
+<div class="section">
+<h2>Save Deal</h2>
+
+<button onclick="saveDeal()">💾 Save to Deal Board</button>
+
+<div id="saveStatus"></div>
+</div>
 
 <script>
-let allDeals = [];
+function analyzeDeal() {
+  let arv = parseFloat(document.getElementById("arv").value);
+  let purchase = parseFloat(document.getElementById("purchase").value);
+  let repairs = parseFloat(document.getElementById("repairs").value);
 
-fetch('deals.json')
-.then(res => res.json())
-.then(data => {
-  allDeals = data;
-  displayDeals(data);
-});
+  let total = purchase + repairs;
+  let profit = arv - total;
+  let fee = profit * 0.3;
 
-function displayDeals(deals) {
-  let container = document.getElementById('deals');
-  container.innerHTML = '';
-
-  deals.forEach(d => {
-    let div = document.createElement('div');
-    div.className = "card " + (d.score >= 80 ? "hot" : "");
-    div.innerHTML = `
-      <h3>${d.address}</h3>
-      <p>ARV: $${d.arv}</p>
-      <p>Profit: $${d.profit}</p>
-      <p>Status: ${d.status}</p>
-      <p>Score: ${d.score}</p>
-    `;
-    container.appendChild(div);
-  });
+  document.getElementById("results").innerHTML = `
+    ARV: <span class="highlight">$${arv}</span><br>
+    Total Cost: $${total}<br>
+    Spread: <span class="highlight">$${profit}</span><br>
+    Your Fee (30%): $${fee.toFixed(0)}
+  `;
 }
 
-function filterDeals() {
-  let val = document.getElementById('filter').value;
+function buildOffers() {
+  let cash = document.getElementById("cashOffer").value;
+  let carry = document.getElementById("sellerCarry").value;
+  let finance = document.getElementById("sellerFinance").value;
 
-  if (val == "all") return displayDeals(allDeals);
+  document.getElementById("offerResults").innerHTML = `
+    💵 Cash Offer: $${cash}<br>
+    🏦 Seller Carry: $${carry}<br>
+    📄 Seller Finance: $${finance}
+  `;
+}
 
-  let filtered = allDeals.filter(d => {
-    if (val == "80") return d.score >= 80;
-    if (val == "50") return d.score >= 50 && d.score < 80;
-  });
-
-  displayDeals(filtered);
+function saveDeal() {
+  document.getElementById("saveStatus").innerHTML =
+    "⚠️ Manual step: Add this deal into deals.json (auto-save upgrade coming)";
 }
 </script>
 
