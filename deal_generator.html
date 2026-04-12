@@ -1,45 +1,79 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>RO’Lyfe Deal Generator</title>
-</head>
+<style>
+body {
+  font-family: Arial;
+  background:#0f172a;
+  color:white;
+  padding:20px;
+}
 
-<body>
+.container {
+  max-width:600px;
+  margin:auto;
+}
 
-<h2>🔥 Deal Pack Generator</h2>
+input, button {
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border-radius:8px;
+  border:none;
+}
 
-<input id="address" placeholder="Property Address"><br>
-<input id="arv" placeholder="ARV"><br>
-<input id="purchase" placeholder="Purchase Price"><br>
-<input id="rehab" placeholder="Rehab Estimate"><br>
+button {
+  background:#22c55e;
+  font-weight:bold;
+}
 
-<button onclick="generate()">Generate Deal Pack</button>
+.card {
+  background:#1e293b;
+  padding:20px;
+  border-radius:12px;
+  margin-top:20px;
+}
+</style>
 
-<pre id="output"></pre>
+<div class="container">
+
+<h1>🧠 Deal Generator</h1>
+
+<input id="address" placeholder="Property Address">
+<input id="arv" placeholder="ARV">
+<input id="price" placeholder="Purchase Price">
+<input id="repairs" placeholder="Repairs">
+
+<button onclick="generateDeal()">Generate Deal</button>
+
+<div id="output" class="card"></div>
+
+</div>
 
 <script>
-function generate() {
+function generateDeal() {
   let address = document.getElementById("address").value;
-  let arv = document.getElementById("arv").value;
-  let purchase = document.getElementById("purchase").value;
-  let rehab = document.getElementById("rehab").value;
+  let arv = parseInt(document.getElementById("arv").value);
+  let price = parseInt(document.getElementById("price").value);
+  let repairs = parseInt(document.getElementById("repairs").value);
 
-  let profit = arv - purchase - rehab;
+  let total = price + repairs;
+  let profit = arv - total;
 
-  document.getElementById("output").innerText =
-`
-RO’LYFE DEAL PACK
+  let score = Math.round((profit / arv) * 100);
 
-Address: ${address}
-ARV: $${arv}
-Purchase: $${purchase}
-Rehab: $${rehab}
-Estimated Profit: $${profit}
+  let deal = {
+    address: address,
+    arv: arv,
+    profit: profit,
+    status: "New",
+    score: score
+  };
 
-Status: Funding Ready
-`;
+  document.getElementById("output").innerHTML = `
+    <h3>🔥 Deal Created</h3>
+    <p>Profit: $${profit}</p>
+    <p>Score: ${score}</p>
+
+    <h4>📋 Copy This:</h4>
+    <pre>${JSON.stringify(deal, null, 2)}</pre>
+  `;
 }
-</script>
-
-</body>
-</html>
+    </script>
