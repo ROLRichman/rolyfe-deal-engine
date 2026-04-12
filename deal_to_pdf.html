@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Deal Report Generator</title>
+</head>
+
+<body>
+
+<h2>Generate Deal Report</h2>
+
+<input id="address" placeholder="Address"><br>
+<input id="profit" placeholder="Profit"><br>
+
+<button onclick="printPDF()">Generate PDF</button>
+
+<div id="report"></div>
+
+<script>
+function printPDF() {
+  let address = document.getElementById("address").value;
+  let profit = document.getElementById("profit").value;
+
+  let content = `
+    <h1>RO’Lyfe Deal Report</h1>
+    <p><b>Address:</b> ${address}</p>
+    <p><b>Projected Profit:</b> $${profit}</p>
+    <p>Status: Funding Ready</p>
+  `;
+
+  document.getElementById("report").innerHTML = content;
+
+  window.print();
+}
+</script>
+
+</body>
+</html>
