@@ -83,6 +83,59 @@ Deal Engine • Funding • Tools • Investor System
     <a href="deals.json">📊 View Raw Deal Data</a>
   </div>
 
+<h2 style="margin-top:40px;">🔥 Live Deal Board</h2>
+
+<select id="filter" onchange="filterDeals()">
+  <option value="all">All Deals</option>
+  <option value="80">🔥 Hot Deals (80+)</option>
+  <option value="50">👀 Mid Deals (50–79)</option>
+</select>
+
+<div id="deals"></div>
+
+<script>
+let allDeals = [];
+
+fetch('deals.json')
+.then(res => res.json())
+.then(data => {
+  allDeals = data;
+  displayDeals(data);
+});
+
+function displayDeals(deals) {
+  let container = document.getElementById('deals');
+  container.innerHTML = '';
+
+  deals.forEach(d => {
+    let div = document.createElement('div');
+    div.className = "card";
+    div.innerHTML = `
+      <h3>${d.address}</h3>
+      <p>ARV: $${d.arv}</p>
+      <p>Profit: $${d.profit}</p>
+      <p>Status: ${d.status}</p>
+      <p>Score: ${d.score}</p>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function filterDeals() {
+  let val = document.getElementById('filter').value;
+
+  if (val == "all") return displayDeals(allDeals);
+
+  let filtered = allDeals.filter(d => {
+    if (val == "80") return d.score >= 80;
+    if (val == "50") return d.score >= 50 && d.score < 80;
+  });
+
+  displayDeals(filtered);
+}
+      </script>
+
+  
 </div>
 
 </body>
