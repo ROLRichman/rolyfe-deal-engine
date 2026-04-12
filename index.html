@@ -111,12 +111,14 @@ function displayDeals(deals) {
     let div = document.createElement('div');
     div.className = "card";
     div.innerHTML = `
-      <h3>${d.address}</h3>
-      <p>ARV: $${d.arv}</p>
-      <p>Profit: $${d.profit}</p>
-      <p>Status: ${d.status}</p>
-      <p>Score: ${d.score}</p>
-    `;
+  <h3>${d.address}</h3>
+  <p>ARV: $${d.arv}</p>
+  <p>Profit: $${d.profit}</p>
+  <p>Status: ${d.status}</p>
+  <p>Score: ${d.score}</p>
+
+  <a href="invest.html">💰 Fund This Deal</a>
+`;
     container.appendChild(div);
   });
 }
