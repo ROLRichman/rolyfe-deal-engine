@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RO’Lyfe Command Dashboard</title>
+
+<style>
+body {
+  font-family: Arial;
+  background:#0f0f0f;
+  color:white;
+  padding:20px;
+}
+
+h1 {
+  color:#22c55e;
+  text-align:center;
+}
+
+.grid {
+  display:grid;
+  grid-template-columns:1fr;
+  gap:15px;
+  margin-top:20px;
+}
+
+.card {
+  background:#1c1c1c;
+  padding:20px;
+  border-radius:12px;
+}
+
+a {
+  display:block;
+  margin:10px 0;
+  color:#22c55e;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+.tag {
+  font-size:12px;
+  opacity:0.7;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🔥 RO’Lyfe Command Dashboard</h1>
+
+<p style="text-align:center;">
+Root Of Lyfe LLC • RO’Lyfe Holdings LLC  
+Deal Engine • Funding • Tools • Investor System
+</p>
+
+<div class="grid">
+
+  <!-- DEAL SYSTEM -->
+  <div class="card">
+    <span class="tag">DEAL SYSTEM</span>
+    <a href="deal_terminal.html">⚙️ Deal Terminal</a>
+    <a href="deal_generator.html">🧠 Deal Generator</a>
+    <a href="deal_to_pdf.html">🧾 Export Deal PDF</a>
+  </div>
+
+  <!-- INVESTOR / FUNDING -->
+  <div class="card">
+    <span class="tag">FUNDING + INVESTORS</span>
+    <a href="invest.html">💰 Invest With Us</a>
+    <a href="funding.html">🏦 Funding Hub</a>
+  </div>
+
+  <!-- MEDIA -->
+  <div class="card">
+    <span class="tag">MEDIA</span>
+    <a href="media.html">🎥 Watch + Learn</a>
+  </div>
+
+  <!-- LIVE DEAL BOARD (OPTIONAL NEXT STEP) -->
+  <div class="card">
+    <span class="tag">LIVE DEAL BOARD</span>
+    <a href="deals.json">📊 View Raw Deal Data</a>
+  </div>
+
+</div>
+
+</body>
+</html>
