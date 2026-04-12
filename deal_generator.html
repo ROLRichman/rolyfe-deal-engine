@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>RO’Lyfe Deal Generator</title>
+</head>
+
+<body>
+
+<h2>🔥 Deal Pack Generator</h2>
+
+<input id="address" placeholder="Property Address"><br>
+<input id="arv" placeholder="ARV"><br>
+<input id="purchase" placeholder="Purchase Price"><br>
+<input id="rehab" placeholder="Rehab Estimate"><br>
+
+<button onclick="generate()">Generate Deal Pack</button>
+
+<pre id="output"></pre>
+
+<script>
+function generate() {
+  let address = document.getElementById("address").value;
+  let arv = document.getElementById("arv").value;
+  let purchase = document.getElementById("purchase").value;
+  let rehab = document.getElementById("rehab").value;
+
+  let profit = arv - purchase - rehab;
+
+  document.getElementById("output").innerText =
+`
+RO’LYFE DEAL PACK
+
+Address: ${address}
+ARV: $${arv}
+Purchase: $${purchase}
+Rehab: $${rehab}
+Estimated Profit: $${profit}
+
+Status: Funding Ready
+`;
+}
+</script>
+
+</body>
+</html>
