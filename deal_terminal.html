@@ -1,153 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RO’Lyfe Deal Terminal</title>
+<title>Deal Terminal</title>
 
 <style>
-body {
-  font-family: Arial;
-  background:#0f172a;
-  color:white;
-  margin:0;
-  padding:15px;
-}
-
-h1 {
-  text-align:center;
-  color:#22c55e;
-}
-
-.section {
-  background:#1e293b;
-  padding:15px;
-  border-radius:12px;
-  margin-top:15px;
-}
-
-input, button {
-  width:100%;
-  padding:12px;
-  margin-top:10px;
-  border-radius:8px;
-  border:none;
-  font-size:16px;
-}
-
-button {
-  background:#22c55e;
-  color:black;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-.flex {
-  display:flex;
-  gap:10px;
-}
-
-.flex input {
-  flex:1;
-}
-
-.result {
-  margin-top:10px;
-  font-size:18px;
-}
-
-.highlight {
-  color:#22c55e;
-  font-weight:bold;
-}
+body{background:#0f172a;color:white;font-family:Arial;padding:15px;}
+.section{background:#1e293b;padding:15px;border-radius:10px;margin-top:10px;}
+input,button{width:100%;padding:12px;margin-top:8px;border-radius:8px;border:none;}
+.btn{background:#22c55e;color:black;font-weight:bold;}
 </style>
 </head>
 
 <body>
 
-<h1>🔥 RO’Lyfe Deal Terminal</h1>
+<h1>⚙️ Deal Terminal</h1>
 
-<!-- PROPERTY -->
 <div class="section">
-<h2>Property Analyzer</h2>
+<input id="arv" placeholder="ARV">
+<input id="price" placeholder="Purchase Price">
+<input id="repairs" placeholder="Repairs">
 
-<input id="address" placeholder="Property Address">
-<input id="arv" placeholder="ARV (After Repair Value)">
-<input id="purchase" placeholder="Purchase Price">
-<input id="repairs" placeholder="Estimated Repairs">
+<button class="btn" onclick="calc()">Analyze</button>
 
-<button onclick="analyzeDeal()">Analyze Deal</button>
-
-<div id="results" class="result"></div>
-</div>
-
-<!-- OFFER STRUCTURE -->
-<div class="section">
-<h2>Three-Tier Offer Builder</h2>
-
-<input id="cashOffer" placeholder="All Cash Offer">
-<input id="sellerCarry" placeholder="Seller Carry Price">
-<input id="sellerFinance" placeholder="Seller Finance Price">
-
-<button onclick="buildOffers()">Generate Offer Summary</button>
-
-<div id="offerResults" class="result"></div>
-</div>
-
-<!-- SAVE DEAL -->
-<div class="section">
-<h2>Save Deal</h2>
-
-<button onclick="saveDeal()">💾 Save to Deal Board</button>
-
-<div id="saveStatus"></div>
+<div id="out"></div>
 </div>
 
 <script>
-function analyzeDeal() {
-  let arv = parseFloat(document.getElementById("arv").value);
-  let purchase = parseFloat(document.getElementById("purchase").value);
-  let repairs = parseFloat(document.getElementById("repairs").value);
+function calc(){
+let arv=+arv.value;
+let price=+price.value;
+let repairs=+repairs.value;
 
-  let total = purchase + repairs;
-  let profit = arv - total;
-  let fee = profit * 0.3;
+let profit=arv-(price+repairs);
+let score=Math.floor((profit/arv)*100);
 
-  document.getElementById("results").innerHTML = `
-    ARV: <span class="highlight">$${arv}</span><br>
-    Total Cost: $${total}<br>
-    Spread: <span class="highlight">$${profit}</span><br>
-    Your Fee (30%): $${fee.toFixed(0)}
-  `;
-}
-
-function buildOffers() {
-  let cash = document.getElementById("cashOffer").value;
-  let carry = document.getElementById("sellerCarry").value;
-  let finance = document.getElementById("sellerFinance").value;
-
-  document.getElementById("offerResults").innerHTML = `
-    💵 Cash Offer: $${cash}<br>
-    🏦 Seller Carry: $${carry}<br>
-    📄 Seller Finance: $${finance}
-  `;
-}
-
-function saveDeal() {
-  document.getElementById("saveStatus").innerHTML =
-    "⚠️ Manual step: Add this deal into deals.json (auto-save upgrade coming)";
+out.innerHTML=`Profit: $${profit}<br>Score: ${score}`;
 }
 </script>
 
-<a href="deal_terminal.html" <button class="btn" onclick="runDeal()">Analyze Deal</button>⚙️ Deal Terminal</a>
-<a href="deal_generator.html" <button class="btn" onclick="runDeal()">Analyze Deal</button>🧠 Deal Generator</a>
-<a href="deal_to_pdf.html" <button class="btn" onclick="runDeal()">Analyze Deal</button>🧾 Export Deal PDF</a>
-
-<a href="invest.html" <button class="btn" onclick="runDeal()">Analyze Deal</button>💰 Invest With Us</a>
-<a href="funding.html" <button class="btn" onclick="runDeal()">Analyze Deal</button>🏦 Funding Hub</a>
-
-<a href="media.html" <button class="btn" onclick="runDeal()">Analyze Deal</button>🎥 Watch + Learn</a>
-
-<a href="deal_generator.html" <button <button class="btn" onclick="runDeal()">Analyze Deal</button> onclick="runDeal()">Analyze Deal</button>➕ Submit New Deal</a>
-  
 </body>
 </html>
