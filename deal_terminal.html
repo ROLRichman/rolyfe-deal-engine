@@ -2,32 +2,33 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Deal Terminal</title>
+<title>Deal Generator</title>
 
 <style>
 body{background:#0f172a;color:white;font-family:Arial;padding:15px;}
-.section{background:#1e293b;padding:15px;border-radius:10px;margin-top:10px;}
-input,button{width:100%;padding:12px;margin-top:8px;border-radius:8px;border:none;}
-.btn{background:#22c55e;color:black;font-weight:bold;}
+.card{background:#1e293b;padding:15px;border-radius:10px;}
+input,button{width:100%;padding:12px;margin-top:10px;border-radius:8px;border:none;}
+.btn{background:#22c55e;color:black;}
 </style>
 </head>
 
 <body>
 
-<h1>⚙️ Deal Terminal</h1>
+<h1>🧠 Deal Generator</h1>
 
-<div class="section">
+<div class="card">
+<input id="address" placeholder="Address">
 <input id="arv" placeholder="ARV">
-<input id="price" placeholder="Purchase Price">
+<input id="price" placeholder="Purchase">
 <input id="repairs" placeholder="Repairs">
 
-<button class="btn" onclick="calc()">Analyze</button>
-
-<div id="out"></div>
+<button class="btn" onclick="gen()">Generate</button>
 </div>
 
+<div id="output" class="card"></div>
+
 <script>
-function calc(){
+function gen(){
 let arv=+arv.value;
 let price=+price.value;
 let repairs=+repairs.value;
@@ -35,7 +36,7 @@ let repairs=+repairs.value;
 let profit=arv-(price+repairs);
 let score=Math.floor((profit/arv)*100);
 
-out.innerHTML=`Profit: $${profit}<br>Score: ${score}`;
+output.innerHTML=`🔥 Profit: $${profit}<br>Score: ${score}<br>⚠️ Add manually to deals.json`;
 }
 </script>
 
