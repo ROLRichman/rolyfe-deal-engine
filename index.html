@@ -2,187 +2,92 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RO’Lyfe Command Dashboard</title>
+<title>RO’Lyfe Dashboard</title>
 
 <style>
-body {
-  font-family: Arial;
-  background:#0f172a;
-  color:white;
-  padding:20px;
-}
+body {font-family:Arial;background:#0f172a;color:white;padding:15px;}
+h1 {text-align:center;color:#22c55e;}
 
-/* HEADER */
-h1 {
-  color:#22c55e;
-  text-align:center;
-}
+.nav, .grid {display:flex;flex-direction:column;gap:10px;}
 
-/* GRID */
-.grid {
-  display:grid;
-  grid-template-columns:1fr;
-  gap:15px;
-  margin-top:20px;
-}
-
-/* CARD */
 .card {
   background:#1e293b;
-  padding:20px;
+  padding:15px;
   border-radius:12px;
-  box-shadow:0 0 10px rgba(0,0,0,0.4);
 }
 
-/* LINKS RESET */
-a {
-  display:block;
-  margin:10px 0;
-  text-decoration:none;
-}
-
-/* BUTTON SYSTEM (THIS FIXES YOUR “WHITE BOX” ISSUE) */
 .btn {
   background:#1e293b;
   padding:14px;
   border-radius:10px;
   color:#22c55e;
-  font-weight:bold;
   text-align:center;
-  transition:0.2s;
+  text-decoration:none;
   border:1px solid #334155;
 }
 
-.btn:hover {
-  background:#22c55e;
-  color:#0f172a;
-}
+.btn:hover {background:#22c55e;color:#0f172a;}
 
-/* TAG */
-.tag {
-  font-size:12px;
-  opacity:0.7;
-}
-
-/* DEAL COLORS */
-.hot { border-left:5px solid #22c55e; }
-.mid { border-left:5px solid #eab308; }
-.low { border-left:5px solid #ef4444; }
-
-/* FILTER */
-select {
-  width:100%;
-  padding:10px;
-  border-radius:8px;
-  margin-top:10px;
-  background:#1e293b;
-  color:white;
-  border:none;
-}
+.hot {border-left:5px solid #22c55e;}
+.mid {border-left:5px solid #eab308;}
+.low {border-left:5px solid #ef4444;}
 </style>
 </head>
 
 <body>
 
-<h1>🔥 RO’Lyfe Command Dashboard</h1>
+<h1>🔥 RO’Lyfe Command Center</h1>
 
-<p style="text-align:center;">
-Root Of Lyfe LLC • RO’Lyfe Holdings LLC  
-Deal Engine • Funding • Tools • Investor System
-</p>
-
-<div class="grid">
-
-  <!-- DEAL SYSTEM -->
-  <div class="card">
-    <span class="tag">DEAL SYSTEM</span>
-    <a href="deal_terminal.html" class="btn">⚙️ Deal Terminal</a>
-    <a href="deal_generator.html" class="btn">🧠 Deal Generator</a>
-    <a href="deal_to_pdf.html" class="btn">🧾 Export Deal PDF</a>
-  </div>
-
-  <!-- FUNDING -->
-  <div class="card">
-    <span class="tag">FUNDING + INVESTORS</span>
-    <a href="invest.html" class="btn">💰 Invest With Us</a>
-    <a href="funding.html" class="btn">🏦 Funding Hub</a>
-  </div>
-
-  <!-- MEDIA -->
-  <div class="card">
-    <span class="tag">MEDIA</span>
-    <a href="media.html" class="btn">🎥 Watch + Learn</a>
-  </div>
-
-  <!-- ACTION -->
-  <div class="card">
-    <span class="tag">ACTION</span>
-    <a href="deal_generator.html" class="btn">➕ Submit New Deal</a>
-  </div>
-
-  <!-- LIVE DEAL BOARD -->
-  <div class="card">
-    <span class="tag">LIVE DEAL BOARD</span>
-
-    <select id="filter" onchange="filterDeals()">
-      <option value="all">All Deals</option>
-      <option value="80">🔥 Hot Deals (80+)</option>
-      <option value="50">👀 Mid Deals (50–79)</option>
-    </select>
-
-    <div id="deals"></div>
-  </div>
-
+<div class="nav">
+<a href="deal_terminal.html" class="btn">⚙️ Deal Terminal</a>
+<a href="deal_generator.html" class="btn">🧠 Deal Generator</a>
+<a href="deal_to_pdf.html" class="btn">🧾 Export Deal PDF</a>
+<a href="funding.html" class="btn">🏦 Funding Hub</a>
+<a href="invest.html" class="btn">💰 Invest</a>
+<a href="media.html" class="btn">🎥 Media</a>
 </div>
 
+<h2>📊 Live Deals</h2>
+
+<select onchange="filterDeals(this.value)">
+<option value="all">All</option>
+<option value="80">Hot</option>
+<option value="50">Mid</option>
+</select>
+
+<div id="deals"></div>
+
 <script>
-let allDeals = [];
+let allDeals=[];
 
 fetch('deals.json')
-.then(res => res.json())
-.then(data => {
-  allDeals = data;
-  displayDeals(data);
+.then(r=>r.json())
+.then(d=>{allDeals=d;displayDeals(d);});
+
+function displayDeals(data){
+let c=document.getElementById("deals");
+c.innerHTML="";
+data.forEach(d=>{
+let level="low";
+if(d.score>=80)level="hot";
+else if(d.score>=50)level="mid";
+
+let div=document.createElement("div");
+div.className="card "+level;
+
+div.innerHTML=`
+<h3>${d.address}</h3>
+<p>Profit: $${d.profit}</p>
+<p>Score: ${d.score}</p>
+<a href="invest.html" class="btn">💰 Fund</a>
+`;
+c.appendChild(div);
 });
-
-function displayDeals(deals) {
-  let container = document.getElementById('deals');
-  container.innerHTML = '';
-
-  deals.forEach(d => {
-    let div = document.createElement('div');
-
-    let level = "low";
-    if (d.score >= 80) level = "hot";
-    else if (d.score >= 50) level = "mid";
-
-    div.className = "card " + level;
-
-    div.innerHTML = `
-      <h3>${d.address}</h3>
-      <p>ARV: $${d.arv}</p>
-      <p>Profit: $${d.profit}</p>
-      <p>Status: ${d.status}</p>
-      <p>Score: ${d.score}</p>
-
-      <a href="invest.html" class="btn">💰 Fund This Deal</a>
-    `;
-
-    container.appendChild(div);
-  });
 }
 
-function filterDeals() {
-  let val = document.getElementById('filter').value;
-
-  if (val == "all") return displayDeals(allDeals);
-
-  let filtered = allDeals.filter(d => {
-    if (val == "80") return d.score >= 80;
-    if (val == "50") return d.score >= 50 && d.score < 80;
-  });
-
-  displayDeals(filtered);
+function filterDeals(val){
+if(val=="all")return displayDeals(allDeals);
+displayDeals(allDeals.filter(d=>val=="80"?d.score>=80:d.score>=50&&d.score<80));
 }
 </script>
 
